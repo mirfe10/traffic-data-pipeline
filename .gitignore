@@ -1,0 +1,37 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# dbt
+logs/
+target/
+dbt_packages/
+
+# Airflow
+airflow/logs/
+airflow/airflow.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+
+# Airflow
+airflow/__pycache__/
+
+# Docker
+*.log
+
+# macOS / Windows
+Desktop.ini
