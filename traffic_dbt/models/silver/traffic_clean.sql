@@ -4,6 +4,9 @@ WITH traffic_base AS (
         id,
         created_at,
         location_name,
+        latitude,
+        longitude,
+        road_geometry,
 
         ROUND(
             (
@@ -22,7 +25,6 @@ WITH traffic_base AS (
 
         current_travel_time,
         free_flow_travel_time,
-
         road_closed
 
     FROM bronze.traffic_raw
@@ -38,6 +40,9 @@ SELECT
     id,
     created_at,
     location_name,
+    latitude,
+    longitude,
+    road_geometry,
 
     traffic_congestion_percent,
     delay_seconds,
