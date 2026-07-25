@@ -23,4 +23,4 @@ GROUP BY
     weather_severity,
     is_raining
 
-ORDER BY avg_delay DESC;
+ORDER BY avg_delay DESC
