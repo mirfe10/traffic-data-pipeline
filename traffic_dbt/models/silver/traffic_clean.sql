@@ -38,6 +38,7 @@ WITH traffic_base AS (
 
 SELECT
     id,
+    DATE_TRUNC('minute', created_at) AS event_time,
     created_at,
     location_name,
     latitude,
