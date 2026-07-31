@@ -1,23 +1,10 @@
 import os
-from pathlib import Path
-from dotenv import load_dotenv
-from sqlalchemy import create_engine
 from locations import get_locations
 import requests
 import pandas as pd
 from datetime import datetime
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
-
-weather_engine = create_engine(
-    f"postgresql+psycopg2://"
-    f"{os.getenv('DB_USER')}:"
-    f"{os.getenv('DB_PASSWORD')}@"
-    f"localhost:"
-    f"{os.getenv('DB_PORT')}/"
-    f"{os.getenv('DB_NAME')}"
-)
+from database import engine
+from zoneinfo import ZoneInfo
 
 
 def fetch_weather(location):
@@ -45,7 +32,10 @@ def fetch_weather(location):
 
 
 def main():
-    batch_time = datetime.now().replace(second=0, microsecond=0)
+    batch_time = (
+        datetime.now(ZoneInfo("Europe/Istanbul"))
+        .replace(second=0, microsecond=0)
+    )
     locations = get_locations()
     weather_records = []
 
@@ -86,7 +76,7 @@ def main():
     print(df.head())
     df.to_sql(
         "weather_raw",
-        weather_engine,  # engine yerine
+        engine,
         schema="bronze",
         if_exists="append",
         index=False

@@ -18,6 +18,14 @@ with DAG(
         """
     )
 
+    weather = BashOperator(
+        task_id="extract_weather",
+        bash_command="""
+        cd /opt/project/src &&
+        python weather_extract.py
+        """
+    )
+
     dbt = BashOperator(
         task_id="dbt_run",
         bash_command="""
@@ -26,4 +34,4 @@ with DAG(
         """
     )
 
-    extract >> dbt
+    [extract, weather] >> dbt

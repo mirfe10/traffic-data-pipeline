@@ -6,7 +6,7 @@ import pandas as pd
 import json
 from datetime import datetime
 from database import engine
-
+from zoneinfo import ZoneInfo
 
 def load_api_key():
     """API anahtarını .env dosyasından yükler."""
@@ -51,7 +51,10 @@ def print_traffic_data(location, traffic_data):
 
 
 def main():
-    batch_time = datetime.now().replace(second=0, microsecond=0)
+    batch_time = (
+        datetime.now(ZoneInfo("Europe/Istanbul"))
+        .replace(second=0, microsecond=0)
+    )
     api_key = load_api_key()
 
     locations = get_locations()
