@@ -1,11 +1,10 @@
-import os
 from locations import get_locations
 import requests
 import pandas as pd
 from datetime import datetime
 from database import engine
 from zoneinfo import ZoneInfo
-
+import time
 
 def fetch_weather(location):
 
@@ -24,11 +23,24 @@ def fetch_weather(location):
         "weather_code"
     )
 
-    response = requests.get(url, timeout=10)
+    retries = 3
+    delay = 5  # saniye
 
-    response.raise_for_status()
+    for attempt in range(retries):
+        try:
+            response = requests.get(url, timeout=15)
+            response.raise_for_status()
+            return response.json()["current"]
 
-    return response.json()["current"]
+        except requests.exceptions.RequestException as e:
+            print(f"⚠️ Deneme {attempt + 1}/{retries} başarısız: {e}")
+
+            if attempt < retries - 1:
+                print(f"{delay} saniye sonra tekrar deneniyor...")
+                time.sleep(delay)
+            else:
+                print("❌ Tüm denemeler başarısız.")
+                raise
 
 
 def main():
